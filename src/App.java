@@ -95,10 +95,10 @@ public class App {
                 System.out.println();
 
                 // Permutationchoice 2
-                ArrayList<Integer> elist = Arrays.stream(PC2)
+                ArrayList<Integer> pc2List = Arrays.stream(PC2)
                                 .mapToObj(n -> Integer.valueOf(String.valueOf(sum.get(n - 1))))
                                 .collect(Collectors.toCollection(ArrayList::new));
-                elist.forEach(System.out::print);
+                pc2List.forEach(System.out::print);
 
         }
 

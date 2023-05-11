@@ -57,7 +57,6 @@ public class App {
 
                 }
                 sc.close();
-
                 String[] splitByte = input.split("-");
                 int iteration = numberOfIterations(Integer.valueOf(inputk));
 
@@ -69,6 +68,10 @@ public class App {
                 }
 
                 final String temp = key;
+                if (key.length() != 64) {
+                        System.out.println("Invalid Input!");
+                        System.exit(0);
+                }
 
                 // Permuatationchoice 1
                 // generating left key
@@ -96,7 +99,7 @@ public class App {
                                 .mapToObj(n -> Integer.valueOf(String.valueOf(sum.get(n - 1))))
                                 .collect(Collectors.toCollection(ArrayList::new));
                 elist.forEach(System.out::print);
-                
+
         }
 
         public static int numberOfIterations(int num) {
@@ -106,4 +109,4 @@ public class App {
                 }
                 return result;
         }
-}   
+}

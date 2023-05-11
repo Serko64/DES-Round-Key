@@ -96,6 +96,7 @@ public class App {
                                 .mapToObj(n -> Integer.valueOf(String.valueOf(sum.get(n - 1))))
                                 .collect(Collectors.toCollection(ArrayList::new));
                 elist.forEach(System.out::print);
+                
         }
 
         public static int numberOfIterations(int num) {

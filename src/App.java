@@ -1,3 +1,6 @@
+package src;
+
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -30,17 +33,15 @@ public class App {
 
         final static int[] iterations = { 1, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1 };
 
-        public static void main(String[] args) throws Exception {
+        public static void main(String[] args) {
+
                 String input = "";
-                String inputk = "";
 
                 Scanner sc = new Scanner(System.in);
                 while (true) {
                         try {
-                                System.out.println("Please write your input: ");
+                                System.out.println("Hexadecimal: XX-XX-XX-XX-XX-XX-XX-XX\nPlease write your input: ");
                                 input = sc.nextLine();
-                                System.out.println("Please write your k: ");
-                                inputk = sc.nextLine();
 
                                 Pattern pattern = Pattern.compile("^([0-9A-Fa-f]{2}-)*[0-9A-Fa-f]{2}$");
                                 Matcher matcher = pattern.matcher(input);
@@ -58,7 +59,6 @@ public class App {
                 }
                 sc.close();
                 String[] splitByte = input.split("-");
-                int iteration = numberOfIterations(Integer.valueOf(inputk));
 
                 String key = "";
                 for (int i = 0; i < splitByte.length; i++) {
@@ -78,35 +78,38 @@ public class App {
                 ArrayList<Integer> lKey = Arrays.stream(lPC1)
                                 .mapToObj(n -> Integer.valueOf(String.valueOf(temp.charAt(n - 1))))
                                 .collect(Collectors.toCollection(ArrayList::new));
-                // shifting wishnumber
-                Collections.rotate(lKey, -iteration);
 
                 // generating right key
                 ArrayList<Integer> rKey = Arrays.stream(rPC1)
                                 .mapToObj(n -> Integer.valueOf(String.valueOf(temp.charAt(n - 1))))
                                 .collect(Collectors.toCollection(ArrayList::new));
-                // shifting wishnumber
-                Collections.rotate(rKey, -iteration);
+                
+                ArrayList<Integer> pc2List = null;
+                for (int i = 0; i < iterations.length; i++) {
+                        Collections.rotate(lKey, -iterations[i]);
+                        Collections.rotate(rKey, -iterations[i]);
 
-                ArrayList<Integer> sum = new ArrayList<Integer>();
-                sum.addAll(lKey);
-                sum.addAll(rKey);
+                        //combine keys
+                        ArrayList<Integer> sum = new ArrayList<Integer>();
+                        sum.addAll(lKey);
+                        sum.addAll(rKey);
+                        System.out.println("Key: " + (i + 1));
+                        // Permutationchoice 2
+                        pc2List = Arrays.stream(PC2)
+                                        .mapToObj(n -> Integer.valueOf(String.valueOf(sum.get(n - 1))))
+                                        .collect(Collectors.toCollection(ArrayList::new));
+                        pc2List.forEach(System.out::print);
+                        System.out.println();
+                        String binaryString = pc2List.stream()
+                                        .map(Object::toString)
+                                        .collect(Collectors.joining());
 
-                System.out.println();
 
-                // Permutationchoice 2
-                ArrayList<Integer> pc2List = Arrays.stream(PC2)
-                                .mapToObj(n -> Integer.valueOf(String.valueOf(sum.get(n - 1))))
-                                .collect(Collectors.toCollection(ArrayList::new));
-                pc2List.forEach(System.out::print);
-
-        }
-
-        public static int numberOfIterations(int num) {
-                int result = 0;
-                for (int index = 0; index < num; index++) {
-                        result += iterations[index];
+                        //convert into hexadecimal
+                        BigInteger binary = new BigInteger(binaryString, 2);
+                        String hex = binary.toString(16);
+                        System.out.println(hex+"\n");
                 }
-                return result;
+
         }
 }
